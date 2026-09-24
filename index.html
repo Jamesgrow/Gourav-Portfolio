@@ -1,0 +1,1306 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Gourav Chantola — Product &amp; UI/UX Designer</title>
+<!-- Google Fonts: Editorial Serif + Clean Sans + Playful Handwritten -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'serif'],
+            hand: ['"Caveat"', 'cursive'],
+            mono: ['"Space Mono"', 'monospace']
+          },
+          colors: {
+            skyBlue: '#3ea6ff',
+            deepSky: '#1d80e2',
+            cloudCream: '#faf8f2',
+            matGreen: '#1b5e39',
+            matGrid: '#288050',
+            terracotta: '#ea580c'
+          },
+          animation: {
+            'spin-slow': 'spin 12s linear infinite',
+            'float-gentle': 'float 4s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles: Blueprint Grid, Cutting Mat Pattern, Graphic Details -->
+<style data-purpose="custom-textures">
+    /* Subtle graph paper grid pattern */
+    .grid-notebook {
+      background-color: #f6fafe;
+      background-image: 
+        linear-gradient(to right, rgba(147, 197, 253, 0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(147, 197, 253, 0.35) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* Tactile Green Self-Healing Cutting Mat Pattern */
+    .cutting-mat {
+      background-color: #195834;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+    }
+  </style>
+</head><body class="bg-[#faf8f2] text-slate-900 font-sans antialiased overflow-x-hidden selection:bg-amber-300 selection:text-slate-950 relative"><svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<!-- Fixed Interactive Reactive Dotted Background Canvas -->
+<canvas aria-hidden="true" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-70" id="interactive-dots-bg" width="1600" height="4598"></canvas>
+<!-- BEGIN: HeroSection -->
+<!-- Himalayan Sky Blue Canvas with Painted Clouds, Sun Graphic & Playable Ball Drop Toy -->
+<section class="relative min-h-screen bg-gradient-to-b from-[#2b90ef] via-[#63b3fc] to-[#e4f3ff] pt-6 pb-24 px-4 sm:px-8 overflow-hidden flex flex-col justify-between z-10" data-purpose="sky-hero-container" id="hero" style="background: linear-gradient(rgb(24, 94, 204) 0%, rgb(30, 109, 224) 22%, rgb(56, 139, 242) 44%, rgb(96, 169, 248) 68%, rgb(158, 206, 253) 84%, rgb(217, 235, 255) 94%, rgb(244, 249, 255) 100%);"><div class="absolute inset-0 pointer-events-none overflow-hidden z-0"><canvas class="absolute inset-0 w-full h-full pointer-events-none z-0" id="interactive-hero-dots" width="1600" height="1428"></canvas><script>(function(){
+  const hero = document.getElementById('hero');
+  const canvas = document.getElementById('interactive-hero-dots');
+  if (!hero || !canvas) return;
+  const ctx = canvas.getContext('2d');
+  let width = hero.clientWidth;
+  let height = hero.clientHeight;
+
+  // Track cursor position relative to hero viewport
+  const mouse = {
+    x: -2000,
+    y: -2000,
+    targetX: -2000,
+    targetY: -2000,
+    radius: 175,
+    active: false
+  };
+
+  const spacing = 30;
+  let dots = [];
+
+  class HeroGridDot {
+    constructor(x, y) {
+      this.ox = x;
+      this.oy = y;
+      this.x = x;
+      this.y = y;
+      this.vx = 0;
+      this.vy = 0;
+      this.baseR = 1.6;
+      this.r = 1.6;
+      this.targetR = 1.6;
+      this.glow = 0;
+      this.targetGlow = 0;
+    }
+
+    update(mx, my, active) {
+      const dx = mx - this.x;
+      const dy = my - this.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (active && dist < mouse.radius && dist > 0) {
+        const factor = (mouse.radius - dist) / mouse.radius;
+        const angle = Math.atan2(dy, dx);
+        const push = factor * 26;
+        const tx = this.ox - Math.cos(angle) * push;
+        const ty = this.oy - Math.sin(angle) * push;
+
+        this.vx += (tx - this.x) * 0.22;
+        this.vy += (ty - this.y) * 0.22;
+        this.targetR = this.baseR + factor * 3.4;
+        this.targetGlow = factor;
+      } else {
+        this.vx += (this.ox - this.x) * 0.085;
+        this.vy += (this.oy - this.y) * 0.085;
+        this.targetR = this.baseR;
+        this.targetGlow = 0;
+      }
+
+      this.vx *= 0.78;
+      this.vy *= 0.78;
+      this.x += this.vx;
+      this.y += this.vy;
+
+      this.r += (this.targetR - this.r) * 0.2;
+      this.glow += (this.targetGlow - this.glow) * 0.2;
+    }
+
+    draw(c) {
+      c.beginPath();
+      c.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+
+      if (this.glow > 0.02) {
+        c.fillStyle = `rgba(255, 255, 255, ${0.55 + this.glow * 0.45})`;
+        c.shadowColor = `rgba(254, 240, 138, ${0.85 * this.glow})`;
+        c.shadowBlur = this.glow * 14;
+      } else {
+        c.fillStyle = 'rgba(255, 255, 255, 0.42)';
+        c.shadowBlur = 0;
+      }
+      c.fill();
+    }
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    width = hero.clientWidth;
+    height = hero.clientHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    dots = [];
+    const cols = Math.ceil(width / spacing) + 1;
+    const rows = Math.ceil(height / spacing) + 1;
+    const offX = (width % spacing) / 2;
+    const offY = (height % spacing) / 2;
+
+    for (let r = 0; r <= rows; r++) {
+      for (let c = 0; c <= cols; c++) {
+        dots.push(new HeroGridDot(offX + c * spacing, offY + r * spacing));
+      }
+    }
+  }
+
+  function onPointerMove(e) {
+    const rect = hero.getBoundingClientRect();
+    mouse.targetX = e.clientX - rect.left;
+    mouse.targetY = e.clientY - rect.top;
+    mouse.active = true;
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    if (
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom
+    ) {
+      mouse.targetX = e.clientX - rect.left;
+      mouse.targetY = e.clientY - rect.top;
+      mouse.active = true;
+    } else {
+      mouse.active = false;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      const rect = hero.getBoundingClientRect();
+      const t = e.touches[0];
+      if (
+        t.clientX >= rect.left &&
+        t.clientX <= rect.right &&
+        t.clientY >= rect.top &&
+        t.clientY <= rect.bottom
+      ) {
+        mouse.targetX = t.clientX - rect.left;
+        mouse.targetY = t.clientY - rect.top;
+        mouse.active = true;
+      } else {
+        mouse.active = false;
+      }
+    }
+  }, { passive: true });
+
+  hero.addEventListener('pointerenter', onPointerMove);
+  hero.addEventListener('pointermove', onPointerMove);
+  hero.addEventListener('pointerleave', () => { mouse.active = false; });
+  window.addEventListener('resize', resize);
+  resize();
+
+  function loop() {
+    ctx.clearRect(0, 0, width, height);
+    if (mouse.active) {
+      mouse.x += (mouse.targetX - mouse.x) * 0.28;
+      mouse.y += (mouse.targetY - mouse.y) * 0.28;
+    } else {
+      mouse.x = -2000;
+      mouse.y = -2000;
+    }
+
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].update(mouse.x, mouse.y, mouse.active);
+      dots[i].draw(ctx);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();</script><svg class="absolute bottom-0 w-full h-56 sm:h-72 md:h-88 object-cover opacity-30 text-white" fill="currentColor" preserveAspectRatio="none" viewBox="0 0 1440 320"><path d="M0,224L48,208C96,192,192,160,288,170.7C384,181,480,235,576,218.7C672,203,768,117,864,122.7C960,128,1056,224,1152,240C1248,256,1344,192,1392,160L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg><svg class="absolute bottom-0 w-full h-40 sm:h-52 md:h-64 object-cover opacity-45 text-white/80" fill="currentColor" preserveAspectRatio="none" viewBox="0 0 1440 240"><path d="M0,160L60,140C120,120,240,80,360,100C480,120,600,200,720,185C840,170,960,60,1080,75C1200,90,1320,170,1380,205L1440,240L1440,240L0,240Z"></path></svg></div>
+<!-- Floating Top Navigation Bar (Pill Header) -->
+<header class="max-w-7xl mx-auto w-full flex items-center justify-between z-30 pt-2 pb-4">
+<!-- Location Pill -->
+<div class="hidden sm:flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/30 shadow-sm text-white text-[11px] font-mono tracking-widest uppercase"><span class="text-rose-400 text-xs">📍</span><span class="font-bold text-white/95">INDIA</span></div>
+<!-- Center Floating Pill Menu -->
+<nav class="flex items-center gap-1 sm:gap-2 bg-white/85 backdrop-blur-xl px-2.5 py-1.5 rounded-full border border-white/80 shadow-lg shadow-sky-900/10 mx-auto sm:mx-0"><a class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full hover:bg-slate-100/60 transition-colors" href="#about"><span class="w-6 h-6 rounded-full border-2 border-amber-300 bg-amber-100/60 flex items-center justify-center shadow-xs"><span class="w-2 h-2 rounded-full bg-amber-400"></span></span><span class="text-xs font-bold text-slate-800 tracking-tight">Gourav</span></a><a class="text-xs font-semibold px-3 py-1.5 text-slate-700 hover:text-blue-600 transition-colors" href="#work">Work</a><a class="text-xs font-semibold px-3 py-1.5 text-slate-700 hover:text-blue-600 transition-colors" href="#about">About</a><a class="text-xs font-semibold px-3 py-1.5 text-slate-700 hover:text-blue-600 transition-colors cursor-pointer" href="#playground" id="nav-playground-btn" onclick="event.preventDefault(); const target = document.getElementById('playground') || document.getElementById('physics-lab') || document.getElementById('playground-section'); if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }">Playground</a><a class="flex items-center gap-1.5 bg-slate-950 text-white text-xs font-semibold px-3.5 py-1.5 rounded-full hover:bg-slate-800 transition-all shadow-sm" href="#contact"><span class="text-[11px]">💬</span><span class="tracking-tight font-medium">Work with me</span></a></nav>
+<!-- Status Indicator Pill -->
+<div class="hidden sm:flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/30 text-white text-xs font-mono"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span class="font-medium text-[10px] tracking-wider text-white/95 uppercase">OPEN FOR DESIGN GIGS</span></div>
+</header>
+<!-- Side Vertical Craft Typography Label (Left Margin) -->
+<div class="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-6 z-20 pointer-events-none opacity-80">
+<span class="font-mono text-[11px] tracking-[0.25em] text-white/90 uppercase [writing-mode:vertical-rl] rotate-180">
+        DESIGN / SYSTEMS / CRAFT
+      </span>
+<div class="w-px h-16 bg-white/40"></div>
+</div>
+<!-- Main Hero Statement Box -->
+<main class="max-w-5xl mx-auto w-full mt-10 md:mt-16 z-20 text-center flex flex-col items-center" data-purpose="hero-statement">
+<!-- Subtitle Tagline with Yellow Dot -->
+<div class="flex items-center gap-2 mb-4 justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#fde047]"></span>
+<p class="font-mono text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold text-white drop-shadow-sm">👋 HI, I'M GOURAV. UI/UX DESIGNER</p>
+</div>
+<!-- Expressive Big Editorial Headline -->
+<h1 class="font-serif italic font-normal text-6xl sm:text-8xl lg:text-[104px] leading-[0.95] tracking-tight drop-shadow-sm" style="color: rgb(255, 255, 255); text-shadow: rgba(27, 85, 133, 0.25) 0px 2px 8px;">Designer who <span class="relative inline-block not-italic px-4 py-1 mx-1"><span class="relative z-10 font-serif text-white">Solves</span><svg class="absolute inset-0 w-[116%] h-[126%] -left-[8%] -top-[13%] pointer-events-none -rotate-2 select-none overflow-visible" fill="none" preserveAspectRatio="none" viewBox="0 0 240 100" xmlns="http://www.w3.org/2000/svg"><path d="M25 50C22 25 80 8 155 10C212 12 236 28 232 55C228 82 178 94 112 92C50 90 10 78 14 46C17 25 58 13 110 12C165 11 220 22 230 48" opacity="0.95" stroke="#ffd028" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5" style="filter: drop-shadow(0 3px 10px rgba(245, 158, 11, 0.65));"></path><path d="M32 54C30 36 78 16 142 16C198 16 226 28 224 50C222 72 180 85 125 84" opacity="0.6" stroke="#f59e0b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></span></h1>
+<p class="font-sans text-xl sm:text-3xl font-light text-white/95 mt-4 max-w-2xl leading-snug drop-shadow-sm mx-auto">UI/UX Designer focused on making complex digital products simple, clear, and easy to use. I design mobile apps and SaaS products through user flows, wireframes, systems, and high-fidelity prototypes in Figma.</p><div class="relative mt-6 flex items-center justify-center pointer-events-auto z-20"><div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/40 shadow-sm text-white text-xs font-mono tracking-wide"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span class="font-semibold text-white">Open to UI/UX &amp; Product Design roles · India / Remote</span></div></div>
+<!-- BALL DROP & CONFETTI BLASTER TACTILE GAME WIDGET -->
+<div class="mt-10 max-w-2xl w-full bg-[#faf7f2] border border-stone-300/90 rounded-3xl p-4 sm:p-6 shadow-2xl shadow-sky-950/25 flex flex-col gap-4 relative select-none mx-auto text-slate-800 backdrop-blur-md scroll-mt-24" data-purpose="tactile-physics-game-box" id="playground">
+<!-- Skeuomorphic Brass Screw Accents -->
+<div class="absolute top-3 left-3 w-2.5 h-2.5 rounded-full bg-stone-300 border border-stone-400 flex items-center justify-center pointer-events-none"><div class="w-1.5 h-0.5 bg-stone-600 rotate-45"></div></div>
+<div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-stone-300 border border-stone-400 flex items-center justify-center pointer-events-none"><div class="w-1.5 h-0.5 bg-stone-600 -rotate-12"></div></div>
+<div class="absolute bottom-3 left-3 w-2.5 h-2.5 rounded-full bg-stone-300 border border-stone-400 flex items-center justify-center pointer-events-none"><div class="w-1.5 h-0.5 bg-stone-600 rotate-12"></div></div>
+<div class="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full bg-stone-300 border border-stone-400 flex items-center justify-center pointer-events-none"><div class="w-1.5 h-0.5 bg-stone-600 -rotate-45"></div></div>
+<!-- Header Bar: Tactile Badge + Subtitle + Live Counters -->
+<div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200/90 pb-3 px-1" id="physics-lab">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-md bg-stone-900 text-amber-300 font-mono text-[10px] font-bold tracking-wider shadow-sm">TOY-01 // TACTILE PHYSICS LAB</span>
+<span class="font-mono text-[11px] text-stone-600 font-semibold hidden sm:inline">BALL DROP &amp; CONFETTI CANNON</span>
+</div>
+<div class="flex items-center gap-2">
+<!-- Live Score Badge -->
+<span class="inline-flex items-center gap-1.5 bg-white border border-stone-200 shadow-sm px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-amber-700">
+<span class="">🏆 SCORE:</span>
+<span class="font-bold text-stone-900" id="game-score-display">125</span>
+</span>
+<!-- Balls on Screen Pill -->
+<span class="inline-flex items-center gap-1.5 bg-white border border-stone-200 shadow-sm px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold text-emerald-800">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="">BALLS:</span>
+<span class="font-bold text-emerald-900" id="game-balls-display">0</span>
+</span>
+</div>
+</div>
+<!-- Interactive Canvas Playground Container -->
+<div class="relative w-full rounded-2xl overflow-hidden border-2 border-stone-300/80 bg-gradient-to-b from-[#e8f4fc] via-[#f7fbff] to-[#fff7ed] shadow-inner cursor-crosshair group select-none" id="playground-section" style="height: 250px;">
+<!-- Canvas Element -->
+<canvas class="w-full h-full block cursor-pointer" id="physics-toy-canvas" width="774" height="309"></canvas>
+<!-- Tap / Click Overlay Prompt -->
+<div class="absolute top-2.5 left-1/2 -translate-x-1/2 pointer-events-none bg-stone-900/75 backdrop-blur-sm text-white px-3 py-1 rounded-full text-[10px] font-mono tracking-wider flex items-center gap-1.5 transition-opacity duration-300" id="canvas-tap-hint" style="opacity: 0;">
+<span class="">👆</span>
+<span class="font-medium uppercase">CLICK / TAP CANVAS TO DROP BOUNCY BALLS</span>
+</div>
+<!-- Multiplier Bucket Badges at Bottom overlay -->
+<div class="absolute bottom-1 left-0 right-0 flex justify-around px-2 pointer-events-none text-[9px] font-mono font-black text-stone-600/90">
+<span class="bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded border border-stone-200/80 shadow-xs">2x MULTIPLIER</span>
+<span class="bg-amber-100/90 text-amber-900 backdrop-blur-xs px-2.5 py-0.5 rounded border border-amber-300/90 shadow-xs font-bold">⭐ 10x JACKPOT ⭐</span>
+<span class="bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded border border-stone-200/80 shadow-xs">5x BONUS</span>
+</div>
+</div>
+<!-- Tactile Control Bar / Button Deck -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+<!-- Button 1: Drop Single Ball -->
+<button class="group relative flex items-center justify-center gap-1.5 bg-white hover:bg-stone-50 active:bg-blue-50 text-slate-800 font-mono text-xs font-bold py-2.5 px-3 rounded-xl border-2 border-stone-300 hover:border-blue-400 active:scale-95 shadow-sm transition-all cursor-pointer select-none" id="btn-drop-ball" type="button">
+<span class="text-rose-500 group-hover:scale-125 transition-transform text-sm">🔴</span>
+<span class="truncate">Drop Ball</span>
+</button>
+<!-- Button 2: Blast Confetti -->
+<button class="group relative flex items-center justify-center gap-1.5 bg-gradient-to-b from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-stone-950 font-mono text-xs font-bold py-2.5 px-3 rounded-xl border-b-4 border-amber-600 active:border-b-0 active:translate-y-1 shadow-md transition-all cursor-pointer select-none" id="btn-blast-confetti" type="button">
+<span class="group-hover:rotate-12 transition-transform text-sm">🎉</span>
+<span class="uppercase tracking-tight font-extrabold truncate">BLAST CONFETTI</span>
+</button>
+<!-- Button 3: Multi-Drop Barrage -->
+<button class="px-3.5 py-2.5 bg-white hover:bg-amber-50 text-amber-900 border-2 border-amber-200/80 hover:border-amber-400 rounded-xl font-mono font-bold text-xs shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer select-none" id="btn-barrage" type="button">
+<span class="text-amber-500">⚡</span>
+<span class="truncate">10x Barrage</span>
+</button>
+<!-- Button 4: Reset Lab -->
+<button class="group relative flex items-center justify-center gap-1.5 bg-white hover:bg-stone-50 active:bg-rose-50 text-slate-600 hover:text-slate-900 font-mono text-xs font-bold py-2.5 px-3 rounded-xl border-2 border-stone-300 hover:border-rose-400 active:scale-95 shadow-sm transition-all cursor-pointer select-none" id="btn-clear-lab" type="button">
+<span class="group-hover:rotate-45 transition-transform text-sm">🧹</span>
+<span class="truncate">Reset Lab</span>
+</button>
+</div>
+<!-- Status Ticker & Micro-Feed -->
+<div class="flex flex-wrap items-center justify-between gap-1 px-1 pt-1 border-t border-stone-200/70 text-[9px] font-mono text-stone-500">
+<div class="flex items-center gap-1.5 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="" id="game-status-ticker">HIT! 2x (+20) • TOTAL: 125</span>
+</div>
+<span class="font-bold text-blue-600 hidden sm:inline">60 FPS ENGINE ↗</span>
+</div>
+</div>
+<!-- SCRIPT: Robust Self-Contained Ball Drop & Confetti Cannon Engine -->
+<script>
+(function() {
+  const canvas = document.getElementById('physics-toy-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  const scoreEl = document.getElementById('game-score-display');
+  const ballsEl = document.getElementById('game-balls-display');
+  const hintEl = document.getElementById('canvas-tap-hint');
+  const tickerEl = document.getElementById('game-status-ticker');
+  
+  const btnDrop = document.getElementById('btn-drop-ball');
+  const btnConfetti = document.getElementById('btn-blast-confetti');
+  const btnBarrage = document.getElementById('btn-barrage');
+  const btnClear = document.getElementById('btn-clear-lab');
+
+  let width = 600;
+  let height = 250;
+  let score = 0;
+  let dpr = 1;
+
+  // Simple web audio synth for playful tactile clicks & pops
+  let audioCtx = null;
+  function playPopSound(freq = 440, type = 'sine', duration = 0.08) {
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+  }
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    width = rect.width || 600;
+    height = rect.height || 250;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rebuildPegs();
+  }
+
+  // Pegs / Pins grid in middle of canvas
+  let pegs = [];
+  function rebuildPegs() {
+    pegs = [];
+    const rows = 3;
+    const spacingY = 42;
+    const startY = 65;
+    for (let r = 0; r < rows; r++) {
+      const count = r % 2 === 0 ? 7 : 8;
+      const spacingX = width / (count + 1);
+      for (let c = 1; c <= count; c++) {
+        pegs.push({
+          x: c * spacingX,
+          y: startY + r * spacingY,
+          r: 5,
+          hitPulse: 0,
+          color: '#3b82f6'
+        });
+      }
+    }
+  }
+
+  const ballColors = [
+    { start: '#ff5964', end: '#d90429' },
+    { start: '#f59e0b', end: '#d97706' },
+    { start: '#38bdf8', end: '#0284c7' },
+    { start: '#34d399', end: '#059669' },
+    { start: '#a855f7', end: '#7e22ce' },
+    { start: '#fb7185', end: '#e11d48' }
+  ];
+
+  let balls = [];
+  let confetti = [];
+  let floatingScores = [];
+
+  class Ball {
+    constructor(x, y, vx, vy) {
+      this.x = (x !== undefined && !isNaN(x)) ? Math.max(15, Math.min(width - 15, x)) : (Math.random() * (width - 60) + 30);
+      this.y = (y !== undefined && !isNaN(y)) ? y : 15;
+      this.vx = (vx !== undefined) ? vx : (Math.random() * 3 - 1.5);
+      this.vy = (vy !== undefined) ? vy : (Math.random() * 2);
+      this.r = Math.floor(Math.random() * 4) + 9;
+      this.gravity = 0.32;
+      this.damping = 0.72;
+      this.friction = 0.985;
+      this.palette = ballColors[Math.floor(Math.random() * ballColors.length)];
+      this.settled = false;
+      this.scored = false;
+      this.age = 0;
+      this.maxAge = 420;
+    }
+
+    update() {
+      this.age++;
+      this.vy += this.gravity;
+      this.vx *= this.friction;
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Left & right walls bounce
+      if (this.x - this.r < 0) {
+        this.x = this.r;
+        this.vx = -this.vx * this.damping;
+      } else if (this.x + this.r > width) {
+        this.x = width - this.r;
+        this.vx = -this.vx * this.damping;
+      }
+
+      // Peg collisions
+      for (let i = 0; i < pegs.length; i++) {
+        const p = pegs[i];
+        const dx = this.x - p.x;
+        const dy = this.y - p.y;
+        const dist = Math.hypot(dx, dy);
+        const minDist = this.r + p.r;
+        if (dist < minDist && dist > 0) {
+          const angle = Math.atan2(dy, dx);
+          const force = (minDist - dist) + 2.5;
+          this.x += Math.cos(angle) * force;
+          this.y += Math.sin(angle) * force;
+          this.vx = Math.cos(angle) * (Math.abs(this.vx) + 2.2) * 0.85;
+          this.vy = Math.sin(angle) * (Math.abs(this.vy) + 2.2) * 0.75;
+          p.hitPulse = 1.0;
+          playPopSound(300 + Math.random() * 200, 'triangle', 0.05);
+        }
+      }
+
+      // Bottom multiplier buckets
+      const bottomLimit = height - this.r - 8;
+      if (this.y >= bottomLimit) {
+        this.y = bottomLimit;
+        this.vy = -this.vy * this.damping;
+
+        if (Math.abs(this.vy) < 0.8) {
+          this.vy = 0;
+          this.settled = true;
+        }
+
+        // Trigger score once on arrival at bottom
+        if (!this.scored) {
+          this.scored = true;
+          let points = 20;
+          let mult = "2x (+20)";
+          const midX = width / 2;
+          if (Math.abs(this.x - midX) < width * 0.16) {
+            points = 100;
+            mult = "JACKPOT! (+100)";
+            spawnConfetti(this.x, this.y, 22);
+            playPopSound(660, 'sine', 0.15);
+          } else if (this.x > width * 0.6) {
+            points = 50;
+            mult = "5x (+50)";
+            playPopSound(480, 'sine', 0.1);
+          } else {
+            playPopSound(380, 'sine', 0.08);
+          }
+          score += points;
+          if (scoreEl) scoreEl.innerText = score;
+          floatingScores.push({
+            x: this.x,
+            y: this.y - 12,
+            text: mult,
+            opacity: 1,
+            vy: -1.2
+          });
+          if (tickerEl) tickerEl.innerText = `HIT! ${mult} • TOTAL: ${score}`;
+        }
+      }
+    }
+
+    draw(c) {
+      c.save();
+      const alpha = this.age > this.maxAge - 40 ? (this.maxAge - this.age) / 40 : 1;
+      c.globalAlpha = Math.max(0, alpha);
+
+      // Ball shadow
+      c.beginPath();
+      c.arc(this.x, this.y + 2, this.r, 0, Math.PI * 2);
+      c.fillStyle = 'rgba(15, 23, 42, 0.15)';
+      c.fill();
+
+      // Ball gradient fill
+      const grad = c.createRadialGradient(
+        this.x - this.r * 0.3,
+        this.y - this.r * 0.3,
+        this.r * 0.1,
+        this.x,
+        this.y,
+        this.r
+      );
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.3, this.palette.start);
+      grad.addColorStop(1, this.palette.end);
+
+      c.beginPath();
+      c.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      c.fillStyle = grad;
+      c.fill();
+
+      // Subtle stroke
+      c.lineWidth = 1;
+      c.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      c.stroke();
+
+      c.restore();
+    }
+  }
+
+  // Confetti Particle System
+  const confettiColors = ['#f59e0b', '#3b82f6', '#ec4899', '#10b981', '#8b5cf6', '#ef4444', '#facc15'];
+  class ConfettiParticle {
+    constructor(x, y, burstPower) {
+      this.x = x || width / 2;
+      this.y = y || height / 2;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * (burstPower || 9) + 3;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed - (burstPower ? 4 : 2);
+      this.gravity = 0.22;
+      this.friction = 0.96;
+      this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      this.w = Math.floor(Math.random() * 6) + 5;
+      this.h = Math.floor(Math.random() * 4) + 4;
+      this.rotation = Math.random() * 360;
+      this.rotSpeed = (Math.random() - 0.5) * 12;
+      this.life = 1;
+      this.decay = Math.random() * 0.015 + 0.012;
+    }
+
+    update() {
+      this.vy += this.gravity;
+      this.vx *= this.friction;
+      this.x += this.vx;
+      this.y += this.vy;
+      this.rotation += this.rotSpeed;
+      this.life -= this.decay;
+    }
+
+    draw(c) {
+      if (this.life <= 0) return;
+      c.save();
+      c.globalAlpha = Math.max(0, this.life);
+      c.translate(this.x, this.y);
+      c.rotate((this.rotation * Math.PI) / 180);
+      c.fillStyle = this.color;
+      c.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+      c.restore();
+    }
+  }
+
+  function spawnBall(x, y) {
+    if (balls.length >= 40) {
+      balls.shift();
+    }
+    balls.push(new Ball(x, y));
+    if (hintEl) hintEl.style.opacity = '0';
+    if (ballsEl) ballsEl.innerText = balls.length;
+    playPopSound(520, 'sine', 0.04);
+  }
+
+  function spawnConfetti(originX, originY, count = 40) {
+    for (let i = 0; i < count; i++) {
+      confetti.push(new ConfettiParticle(originX, originY, 11));
+    }
+    score += 5;
+    if (scoreEl) scoreEl.innerText = score;
+    playPopSound(720, 'triangle', 0.12);
+  }
+
+  // Animation Loop
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw Subtle blueprint grid inside play area
+    ctx.save();
+    ctx.strokeStyle = 'rgba(147, 197, 253, 0.22)';
+    ctx.lineWidth = 1;
+    const step = 24;
+    for (let x = 0; x < width; x += step) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < height; y += step) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Draw Bottom Catch Buckets Dividers
+    ctx.save();
+    ctx.strokeStyle = 'rgba(203, 213, 225, 0.9)';
+    ctx.lineWidth = 2.5;
+    const dividers = [width * 0.32, width * 0.68];
+    dividers.forEach(dx => {
+      ctx.beginPath();
+      ctx.moveTo(dx, height - 28);
+      ctx.lineTo(dx, height);
+      ctx.stroke();
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(dx, height - 28, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.restore();
+
+    // Draw Pegs / Bouncy Pins
+    pegs.forEach(p => {
+      if (p.hitPulse > 0) {
+        p.hitPulse -= 0.05;
+        if (p.hitPulse < 0) p.hitPulse = 0;
+      }
+      ctx.save();
+      if (p.hitPulse > 0) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r + p.hitPulse * 8, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(245, 158, 11, ${p.hitPulse})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y + 1, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r + (p.hitPulse * 1.5), 0, Math.PI * 2);
+      ctx.fillStyle = p.hitPulse > 0 ? '#f59e0b' : '#3b82f6';
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // Update & Draw Balls
+    for (let i = balls.length - 1; i >= 0; i--) {
+      const b = balls[i];
+      b.update();
+      b.draw(ctx);
+      if (b.age >= b.maxAge) {
+        balls.splice(i, 1);
+      }
+    }
+    if (ballsEl) ballsEl.innerText = balls.length;
+
+    // Update & Draw Confetti
+    for (let i = confetti.length - 1; i >= 0; i--) {
+      const c = confetti[i];
+      c.update();
+      c.draw(ctx);
+      if (c.life <= 0) {
+        confetti.splice(i, 1);
+      }
+    }
+
+    // Update & Draw Floating Scores
+    for (let i = floatingScores.length - 1; i >= 0; i--) {
+      const fs = floatingScores[i];
+      fs.y += fs.vy;
+      fs.opacity -= 0.02;
+      if (fs.opacity <= 0) {
+        floatingScores.splice(i, 1);
+      } else {
+        ctx.save();
+        ctx.globalAlpha = fs.opacity;
+        ctx.font = 'bold 11px monospace';
+        ctx.fillStyle = '#d97706';
+        ctx.textAlign = 'center';
+        ctx.fillText(fs.text, fs.x, fs.y);
+        ctx.restore();
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // Accurate Canvas Pointerdown using bounding rect & window scroll
+  canvas.addEventListener('pointerdown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+    spawnBall(clickX, Math.min(clickY, 40));
+  });
+
+  // Buttons Event Listeners
+  if (btnDrop) {
+    btnDrop.addEventListener('click', (e) => {
+      e.preventDefault();
+      spawnBall(width * (0.2 + Math.random() * 0.6), 15);
+      if (tickerEl) tickerEl.innerText = "🔴 BOUNCY BALL DISPATCHED!";
+    });
+  }
+
+  if (btnConfetti) {
+    btnConfetti.addEventListener('click', (e) => {
+      e.preventDefault();
+      spawnConfetti(width * 0.25, height * 0.65, 35);
+      spawnConfetti(width * 0.5, height * 0.45, 50);
+      spawnConfetti(width * 0.75, height * 0.65, 35);
+      if (tickerEl) tickerEl.innerText = "🎉 CONFETTI CANNON FIRED! +15 PTS";
+    });
+  }
+
+  if (btnBarrage) {
+    btnBarrage.addEventListener('click', (e) => {
+      e.preventDefault();
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          spawnBall(Math.random() * (width - 40) + 20, 10);
+        }, i * 70);
+      }
+      if (tickerEl) tickerEl.innerText = "⚡ 10-BALL RAPID BARRAGE INCOMING!";
+    });
+  }
+
+  if (btnClear) {
+    btnClear.addEventListener('click', (e) => {
+      e.preventDefault();
+      balls = [];
+      confetti = [];
+      floatingScores = [];
+      score = 0;
+      if (scoreEl) scoreEl.innerText = '0';
+      if (ballsEl) ballsEl.innerText = '0';
+      if (hintEl) hintEl.style.opacity = '1';
+      if (tickerEl) tickerEl.innerText = "🧹 CANVAS RESET • READY FOR NEXT RUN";
+    });
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Initial welcoming drops
+  setTimeout(() => {
+    spawnBall(width * 0.35, 10);
+    spawnBall(width * 0.65, 15);
+  }, 350);
+
+  animate();
+})();
+</script>
+</main>
+<!-- Bottom Painted Cloud Silhouette Layer -->
+<div class="pointer-events-none absolute inset-0 z-20 overflow-hidden"><div class="pointer-events-auto absolute left-3 sm:left-10 lg:left-24 top-24 sm:top-28 md:top-36 w-20 sm:w-28 md:w-32 transform -rotate-6 hover:rotate-0 hover:scale-110 transition-transform duration-300 ease-out cursor-pointer drop-shadow-xl select-none"></div><div class="pointer-events-auto absolute right-3 sm:right-10 lg:right-24 top-20 sm:top-24 md:top-32 w-20 sm:w-28 md:w-32 transform rotate-6 hover:rotate-0 hover:scale-110 transition-transform duration-300 ease-out cursor-pointer drop-shadow-xl select-none"></div><div class="pointer-events-auto absolute right-2 sm:right-8 md:right-1/4 top-[64%] sm:top-[60%] md:top-[58%] w-16 sm:w-24 md:w-28 transform -rotate-12 hover:rotate-0 hover:scale-110 transition-transform duration-300 ease-out cursor-pointer drop-shadow-xl select-none hidden sm:block"></div></div></section>
+<!-- END: HeroSection -->
+<!-- BEGIN: SelectedWorkSection -->
+<!-- Blueprint / Graph Paper Grid Canvas with Tilted Window Cards & Paperclips -->
+<section class="grid-notebook py-24 px-4 sm:px-8 relative z-10" data-purpose="tilted-cards-work-showcase" id="work" style="background: linear-gradient(rgb(244, 249, 255) 0%, rgb(237, 245, 252) 10%, rgba(246, 250, 254, 0.96) 24%, rgba(250, 248, 242, 0.92) 60%, rgba(235, 245, 254, 0.88) 100%);">
+<!-- Section Header on Blueprint -->
+<div class="max-w-6xl mx-auto mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6"><div><div class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-xs font-mono font-bold px-3 py-1 rounded-md mb-2"><span class="">📁</span><span class="">INDEX OF SELECTED CASE STUDIES</span></div><h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">Selected Case Studies &amp; Design Projects</h2></div><p class="text-slate-600 font-sans max-w-md text-sm sm:text-base">Detailed breakdown of user flows, decisions, prototypes, and concept validation.</p></div>
+<!-- Tilted Pinned Window Cards Grid -->
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-8 items-start">
+<!-- CARD 1: Shelf Life (AI Cooking Companion) - Tilted Left -->
+<article class="relative group transform -rotate-2 hover:rotate-0 transition-transform duration-300 ease-out" data-purpose="project-card-shelf-life">
+<!-- Blue Paperclip Graphic Pinning the Top -->
+<div class="absolute -top-5 left-8 z-30 w-8 h-12 pointer-events-none drop-shadow-md">
+<svg fill="none" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 20 V45 C8 52, 22 52, 22 45 V12 C22 4, 3 4, 3 14 V48" stroke="#2563eb" stroke-linecap="round" stroke-width="4.5"></path>
+</svg>
+</div>
+<!-- Window Browser Card Wrapper -->
+<div class="bg-white rounded-2xl border-2 border-slate-200 shadow-xl shadow-slate-300/40 overflow-hidden group-hover:shadow-2xl transition-all">
+<!-- Browser Dot Header -->
+<div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+</div>
+<span class="text-[10px] font-mono text-slate-500 font-semibold tracking-wider">SHELF_LIFE_</span>
+</div>
+<!-- Card Graphic Preview -->
+<div class="relative bg-[#f5f2eb] aspect-[4/3] overflow-hidden flex items-center justify-center p-2 border-b border-slate-100">
+<img alt="Shelf Life AI Cooking Companion Mobile App UI" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV7069iCEoQ036QeRmUOVgAh3dgDj20-UfPdlObrEgDpyXpYcmAp4lY-VSpIFPf9bYQxMswi-Oyu8lDu0rC-yB3-X_cFQu8MCY6pxd8YEgWBeSw5cG6hioYrX4KYH8618fs5MMr_qADDLtmZZSBcbf8XtOZxUoGcsGyDq6gdMx3YNIHWpFtrHuikFcgBAp2V8bdO7w4lsWguefhaD3nt8tHqoTAGJx9IR2o9QBa3wAjozqNwzx6V_yJ1jP8Z756mUt-LEY0lZhCnhxZw">
+</div>
+<!-- Project Information Footer -->
+<div class="p-5"><div class="flex items-center gap-2 mb-2"><span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold">Mobile UX · Self-Initiated Concept</span></div><h3 class="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Shelf Life — Cooking &amp; Fridge Inventory Concept</h3><div class="mt-3 flex flex-wrap gap-1"><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Figma</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">User Flows</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Wireframes</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Concept Validation</span></div><div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between"><span class="text-xs font-bold text-slate-800 group-hover:underline">Read Case Study →</span><span class="text-[11px] font-mono text-slate-400">2026</span></div></div>
+</div>
+</article>
+<!-- CARD 2: Secure Pay (Fintech Platform) - Tilted Right -->
+<article class="relative group transform rotate-2 hover:rotate-0 transition-transform duration-300 ease-out mt-4 md:mt-0" data-purpose="project-card-secure-pay">
+<!-- Red Paperclip Graphic Pinning the Top -->
+<div class="absolute -top-5 right-10 z-30 w-8 h-12 pointer-events-none drop-shadow-md">
+<svg fill="none" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 20 V45 C8 52, 22 52, 22 45 V12 C22 4, 3 4, 3 14 V48" stroke="#dc2626" stroke-linecap="round" stroke-width="4.5"></path>
+</svg>
+</div>
+<!-- Window Browser Card Wrapper -->
+<div class="bg-white rounded-2xl border-2 border-slate-200 shadow-xl shadow-slate-300/40 overflow-hidden group-hover:shadow-2xl transition-all">
+<!-- Browser Dot Header -->
+<div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+</div>
+<span class="text-[10px] font-mono text-slate-500 font-semibold tracking-wider">SECURE_PAY_APP</span>
+</div>
+<!-- Card Graphic Preview -->
+<div class="relative bg-[#e9f1f8] aspect-[4/3] overflow-hidden flex items-center justify-center p-2 border-b border-slate-100">
+<img alt="Secure Pay Fintech Mobile App UI" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASRtZOWFMqwH1Eia8f5dr9MDXzhTYMXK4CvCZHTXNdna5svOANWhuLHrfgcOtVNkmIjbbdl8gjWoXFnL2EilIZyhJ2itl9ldx8A83Tn9wCfoTCcAPUMHsep7bEXVEj_0K4w7hcoqMP0SRTZPr4SahHFMywh9s97CuDSYnH0nYxU0rYaB65yOq2FoXz_p9E6vOyFPHgFJTepGg4iY0FaZhhUKQuc6b1SXYX8P7cxca25-GU67lVg90oaEvSASJRA5MAMjWgUea81ladfQ">
+</div>
+<!-- Project Information Footer -->
+<div class="p-5"><div class="flex items-center gap-2 mb-2"><span class="text-xs font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-semibold">Fintech · Design System (Solo Concept)</span></div><h3 class="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Secure Pay — Trust-First Banking Concept</h3><div class="mt-3 flex flex-wrap gap-1"><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Figma</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Design Systems</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Prototype</span></div><div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between"><span class="text-xs font-bold text-slate-800 group-hover:underline">Read Case Study →</span><span class="text-[11px] font-mono text-slate-400">2025</span></div></div>
+</div>
+</article>
+<!-- CARD 3: Ledger Mind (Enterprise Financial Dashboard) - Slight Tilt Left -->
+<article class="relative group transform -rotate-1 hover:rotate-0 transition-transform duration-300 ease-out md:col-span-2 lg:col-span-1" data-purpose="project-card-ledger-mind">
+<!-- Yellow Paperclip Graphic Pinning the Top -->
+<div class="absolute -top-5 left-12 z-30 w-8 h-12 pointer-events-none drop-shadow-md">
+<svg fill="none" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 20 V45 C8 52, 22 52, 22 45 V12 C22 4, 3 4, 3 14 V48" stroke="#eab308" stroke-linecap="round" stroke-width="4.5"></path>
+</svg>
+</div>
+<!-- Window Browser Card Wrapper -->
+<div class="bg-white rounded-2xl border-2 border-slate-200 shadow-xl shadow-slate-300/40 overflow-hidden group-hover:shadow-2xl transition-all">
+<!-- Browser Dot Header -->
+<div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+</div>
+<span class="text-[10px] font-mono text-slate-500 font-semibold tracking-wider">LEDGER_AI_DESK</span>
+</div>
+<!-- Card Graphic Preview -->
+<div class="relative bg-[#f0f4f9] aspect-[4/3] overflow-hidden flex items-center justify-center p-2 border-b border-slate-100">
+<img alt="Ledger Mind Financial Analytics SaaS Dashboard" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD9UKsXmEdOL5iy61xL0nfTqPZ7QbuACFTWVytphswLLWD3NBYLHD7w7qxoYgaB7bAORIWu79HZEyxr-1HDGmxFHTeFp1l9foBfEcoI2q1PU8eybUnfgKwNMuW0jSFS48GGsHjLqvTS3-ppxxvxVsdv3WtxqYC1TkhK_8fxKHqHeqD-UDiorTsRtTYspBxpXo1ZTnCRX-FC7Kg3TyxXWaI8A3KMdrYtFeW3MseE2ZDcqe-lZH7OtdfHe48ZSDscYB5tBdQRHphZoi5mQ">
+</div>
+<!-- Project Information Footer -->
+<div class="p-5"><div class="flex items-center gap-2 mb-2"><span class="text-xs font-mono px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-semibold">B2B SaaS · Analytics Concept</span></div><h3 class="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Ledger AI Dashboard — Cashflow Intelligence</h3><div class="mt-3 flex flex-wrap gap-1"><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Design Systems</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">SaaS UX</span><span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">High-Fidelity UI</span></div><div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between"><span class="text-xs font-bold text-slate-800 group-hover:underline">Read Case Study →</span><span class="text-[11px] font-mono text-slate-400">2026</span></div></div>
+</div>
+</article>
+</div>
+<!-- Playful Desk Doodles & Eyes Mascot -->
+<div class="max-w-6xl mx-auto mt-16 pt-8 border-blue-200/70 flex flex-wrap items-center justify-between gap-4"><div class="flex items-center gap-3"><div class="bg-black text-white px-3 py-1 rounded-full text-lg select-none font-bold tracking-widest shadow">👀</div><span class="font-hand text-xl text-slate-700 font-bold">"If users have to think about where to click, we failed the assignment."</span></div><div class="flex items-center gap-2 text-xs font-mono text-slate-500"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="">ALL EXPERIENCES TESTED WITH REAL HUMANS &amp; FRESH COFFEE☕</span></div></div>
+</section>
+<!-- END: SelectedWorkSection -->
+<!-- BEGIN: AboutAndRootsSection -->
+<section class="py-24 bg-[#faf8f2] relative overflow-hidden z-10" data-purpose="designer-profile-and-roots" id="about" style="background: linear-gradient(rgba(234, 244, 252, 0.85) 0%, rgba(246, 250, 254, 0.95) 25%, rgb(250, 248, 242) 50%, rgba(240, 247, 255, 0.9) 85%, rgb(227, 240, 252) 100%);">
+<div class="mx-auto items-center w-full">
+<!-- Biography, Philosophy & Stack Stickers -->
+<div class="space-y-6 flex flex-col items-center text-center"><div class="inline-flex items-center gap-2.5 bg-blue-100 text-blue-800 text-lg font-mono font-bold px-6 py-2.5 rounded-full shadow-md border border-blue-200/70 tracking-tight"><span class="text-xl">🌱</span><span class="">About Me</span></div><div class="space-y-4 text-slate-700 text-base leading-relaxed max-w-2xl text-center px-4"><p class="">I'm a UI/UX designer who enjoys turning tricky user problems into clean, structured digital&nbsp; &nbsp;interfaces. My focus is on mobile and web applications—building flows from exploratory research and rough wireframes all the way to interactive Figma prototypes and component libraries.</p><p class="">While my foundation is built on user-centered design, information architecture, and systems thinking, I also explore AI-assisted workflows to accelerate wireframing and prototyping.</p></div><div class="pt-6 w-full mx-auto overflow-hidden">
+  <style>
+    @keyframes belt-scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes belt-scroll-right {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .animate-belt-left {
+      display: flex;
+      width: max-content;
+      animation: belt-scroll-left 32s linear infinite;
+    }
+    .animate-belt-right {
+      display: flex;
+      width: max-content;
+      animation: belt-scroll-right 36s linear infinite;
+    }
+    .belt-container:hover .animate-belt-left,
+    .belt-container:hover .animate-belt-right {
+      animation-play-state: paused;
+    }
+  </style>
+
+  <div class="flex items-center justify-center gap-2 mb-6">
+    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+    <p class="text-xs font-mono font-bold text-slate-500 tracking-[0.2em] uppercase text-center">CRAFT ARSENAL &amp; CAPABILITIES</p>
+    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+  </div>
+
+  <div class="belt-container relative space-y-3.5 py-1 select-none overflow-hidden">
+    <!-- Side Gradient Masks -->
+    <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-28 z-20 bg-gradient-to-r from-[#eaf4fc] to-transparent"></div>
+    <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-28 z-20 bg-gradient-to-l from-[#eaf4fc] to-transparent"></div>
+
+    <!-- Ribbon 1: Core Design (Flows Left) -->
+    <div class="overflow-hidden flex">
+      <div class="animate-belt-left flex items-center gap-2.5">
+        <!-- Loop Items Set 1 -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Figma &amp; FigJam
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-sky-400"></span>Wireframing
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>High-Fidelity Prototyping
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>Interaction Design
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>User Flows
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-rose-400"></span>Information Architecture
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>Micro-interactions
+        </span>
+        <!-- Loop Items Set 2 (Identical Duplication for Seamless Marquee) -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Figma &amp; FigJam
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-sky-400"></span>Wireframing
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>High-Fidelity Prototyping
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>Interaction Design
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>User Flows
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-rose-400"></span>Information Architecture
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-800 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>Micro-interactions
+        </span>
+      </div>
+    </div>
+
+    <!-- Ribbon 2: Research & Systems (Flows Right) -->
+    <div class="overflow-hidden flex">
+      <div class="animate-belt-right flex items-center gap-2.5">
+        <!-- Loop Items Set 1 -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Design Systems
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-teal-400"></span>Design Tokens
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Usability Testing
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>UX Research
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>Heuristic Analysis
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-rose-400"></span>User-Centered Design
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span>Concept Validation
+        </span>
+        <!-- Loop Items Set 2 (Identical Duplication for Seamless Marquee) -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Design Systems
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-teal-400"></span>Design Tokens
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Usability Testing
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>UX Research
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>Heuristic Analysis
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-rose-400"></span>User-Centered Design
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-emerald-200/80 shadow-xs hover:border-emerald-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-emerald-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span>Concept Validation
+        </span>
+      </div>
+    </div>
+
+    <!-- Ribbon 3: Workflow & Tools (Flows Left) -->
+    <div class="overflow-hidden flex">
+      <div class="animate-belt-left flex items-center gap-2.5">
+        <!-- Loop Items Set 1 -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>Miro
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-stone-700"></span>Notion
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-cyan-500"></span>Canva
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Google Stitch
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-600"></span>Claude
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-teal-500"></span>ChatGPT
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Gemini
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-slate-900"></span>GitHub
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-black"></span>Vercel
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span>Figma Tokens
+        </span>
+        <!-- Loop Items Set 2 (Identical Duplication for Seamless Marquee) -->
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>Miro
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-stone-700"></span>Notion
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-cyan-500"></span>Canva
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Google Stitch
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-amber-600"></span>Claude
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-teal-500"></span>ChatGPT
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>Gemini
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-slate-900"></span>GitHub
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-black"></span>Vercel
+        </span>
+        <span class="inline-flex items-center gap-2 bg-white/90 border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-sm px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-amber-950 transition-all hover:scale-105 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span>Figma Tokens
+        </span>
+      </div>
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<!-- END: AboutAndRootsSection -->
+<!-- BEGIN: ContactAndFooterSection -->
+<footer class="bg-[#faf8f2] pt-20 pb-12 px-4 sm:px-8 relative z-10" data-purpose="contact-footer" id="contact" style="background: linear-gradient(rgba(227, 240, 252, 0.9) 0%, rgba(227, 240, 252, 0.98) 8%, rgb(215, 235, 253) 20%, rgb(158, 206, 253) 45%, rgb(80, 156, 242) 70%, rgb(24, 94, 204) 92%, rgb(18, 76, 172) 100%);">
+<div class="max-w-5xl mx-auto">
+<!-- Main Pitch Card -->
+<div class="border text-slate-800 rounded-3xl p-8 sm:p-14 shadow-xl relative overflow-hidden bg-white border-slate-200">
+<!-- Corner Stamp Graphic -->
+<div class="absolute top-6 right-6 border-2 border-dashed border-stone-400/60 bg-white/60 backdrop-blur-sm rounded-lg p-2 font-mono text-[10px] text-stone-600 tracking-widest uppercase hidden sm:block rotate-6 shadow-sm">
+          AIR MAIL • IN
+        </div>
+<div class="max-w-2xl space-y-4"><span class="font-hand text-3xl text-amber-700 font-bold">Let's build something unforgettable.</span><h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight text-slate-900">Got a product problem to solve? Let's talk.</h2><p class="text-slate-700 text-base sm:text-lg leading-relaxed pt-2">Currently open for full-time UI/UX and Product Design roles, contract projects, and design collaborations worldwide.</p><div class="pt-6 flex flex-wrap items-center gap-4"><a class="bg-amber-400 text-slate-950 font-bold px-8 py-4 rounded-full text-base sm:text-lg hover:bg-amber-300 transition-all shadow-md active:scale-95 flex items-center gap-3 border border-amber-500/40" href="mailto:gk634204@gmail.com"><span class="">✉️ gk634204@gmail.com</span><span class="text-xs font-mono">↗</span></a></div></div>
+<!-- Social Links Buttons -->
+<div class="mt-12 pt-8 border-t border-stone-300/80 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3"><span class="font-semibold">Designed by Gourav · UI/UX Designer</span><span class="text-slate-400">•</span><span class="font-semibold">© 2026</span></div>
+<p class="font-mono text-xs text-stone-600">
+            📍 INDIA • Available Worldwide
+          </p>
+</div>
+</div>
+<!-- Bottom Minimal Copyright Bar -->
+<div class="mt-12 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4"><div class="flex items-center gap-2 bg-white/85 backdrop-blur-md px-4 py-2 rounded-full border border-white/70 shadow-sm text-slate-800 font-mono text-xs font-medium"><span class="font-semibold">Designed by Gourav · UI/UX Designer</span><span class="text-slate-400">•</span><span class="font-semibold">© 2026</span></div><div class="flex items-center gap-4"><a class="bg-white/85 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/70 shadow-sm text-slate-800 hover:text-blue-600 font-mono text-xs font-semibold transition-colors flex items-center gap-1.5" href="#hero"><span class="">Back to top</span><span class="font-mono">↑</span></a></div></div>
+</div>
+</footer>
+<!-- END: ContactAndFooterSection -->
+<!-- SCRIPT: Smooth Interactive Dotted Matrix Background Engine -->
+<script>
+(function() {
+  const canvas = document.getElementById('interactive-dots-bg');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+
+  const mouse = {
+    x: -1000,
+    y: -1000,
+    targetX: -1000,
+    targetY: -1000,
+    radius: 140,
+    active: false
+  };
+
+  const spacing = 32;
+  let dots = [];
+
+  class Dot {
+    constructor(originX, originY) {
+      this.ox = originX;
+      this.oy = originY;
+      this.x = originX;
+      this.y = originY;
+      this.vx = 0;
+      this.vy = 0;
+      this.baseRadius = 1.35;
+      this.currentRadius = 1.35;
+      this.targetRadius = 1.35;
+      this.glow = 0;
+      this.targetGlow = 0;
+    }
+
+    update(mx, my, mouseActive) {
+      const dx = mx - this.x;
+      const dy = my - this.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (mouseActive && dist < mouse.radius && dist > 0) {
+        const factor = (mouse.radius - dist) / mouse.radius;
+        const angle = Math.atan2(dy, dx);
+        const pushForce = factor * 24;
+
+        const targetX = this.ox - Math.cos(angle) * pushForce;
+        const targetY = this.oy - Math.sin(angle) * pushForce;
+
+        const ax = (targetX - this.x) * 0.18;
+        const ay = (targetY - this.y) * 0.18;
+        this.vx += ax;
+        this.vy += ay;
+
+        this.targetRadius = this.baseRadius + factor * 2.8;
+        this.targetGlow = factor;
+      } else {
+        const ax = (this.ox - this.x) * 0.08;
+        const ay = (this.oy - this.y) * 0.08;
+        this.vx += ax;
+        this.vy += ay;
+
+        this.targetRadius = this.baseRadius;
+        this.targetGlow = 0;
+      }
+
+      this.vx *= 0.78;
+      this.vy *= 0.78;
+      this.x += this.vx;
+      this.y += this.vy;
+
+      this.currentRadius += (this.targetRadius - this.currentRadius) * 0.15;
+      this.glow += (this.targetGlow - this.glow) * 0.15;
+    }
+
+    draw(c) {
+      c.beginPath();
+      c.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+
+      if (this.glow > 0.02) {
+        c.fillStyle = `rgba(37, 99, 235, ${0.4 + this.glow * 0.55})`;
+        c.shadowColor = 'rgba(56, 189, 248, 0.75)';
+        c.shadowBlur = this.glow * 10;
+      } else {
+        c.fillStyle = 'rgba(71, 85, 105, 0.28)';
+        c.shadowBlur = 0;
+      }
+
+      c.fill();
+    }
+  }
+
+  function initGrid() {
+    const dpr = window.devicePixelRatio || 1;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    dots = [];
+    const cols = Math.ceil(width / spacing) + 1;
+    const rows = Math.ceil(height / spacing) + 1;
+    const offsetX = (width % spacing) / 2;
+    const offsetY = (height % spacing) / 2;
+
+    for (let r = 0; r <= rows; r++) {
+      for (let c = 0; c <= cols; c++) {
+        dots.push(new Dot(offsetX + c * spacing, offsetY + r * spacing));
+      }
+    }
+  }
+
+  window.addEventListener('resize', initGrid);
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
+    mouse.active = true;
+  }, { passive: true });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.active = false;
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.active = false;
+  });
+
+  initGrid();
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    if (mouse.active) {
+      mouse.x += (mouse.targetX - mouse.x) * 0.25;
+      mouse.y += (mouse.targetY - mouse.y) * 0.25;
+    } else {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    }
+
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
+      d.update(mouse.x, mouse.y, mouse.active);
+      d.draw(ctx);
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  render();
+})();
+</script>
+
+
+
+
+
+
+</body></html>
